@@ -1,14 +1,21 @@
-const Token = artifacts.require('./LogicalToken.sol');
-const DataCentre = artifacts.require('./token/DataCentre.sol');
+const Token = artifacts.require('./SkeletalToken.sol');
+const ControlCentre = artifacts.require('./ControlCentre.sol');
+const DataCentre = artifacts.require('./DataCentre.sol');
 const assertJump = require('./helpers/assertJump');
 
 contract('Token', (accounts) => {
   let token;
+  let controlCentre;  
   let dataCentre;
 
   beforeEach(async () => {
     token = await Token.new();
-    await token.mint(accounts[0], 100);
+    dataCentre = await DataCentre.new();
+    controlCentre = await ControlCentre.new(token.address, dataCentre.address);
+    await token.transferOwnership(controlCentre.address);
+    await dataCentre.transferOwnership(controlCentre.address);
+    await controlCentre.unpause();
+    await controlCentre.mint(accounts[0], 100);
   });
 
   // only needed because of the refactor
@@ -60,7 +67,7 @@ contract('Token', (accounts) => {
 
     it('should not allow transfer tokens when Paused', async () => {
 
-      await token.pause();
+      await controlCentre.pause();
 
       const TOKENHOLDER_1 = accounts[0];
       const BENEFICIARY = accounts[5];
@@ -78,7 +85,7 @@ contract('Token', (accounts) => {
 
     it('should not allow minting tokens when mintingFinished', async () => {
 
-      await token.finishMinting();
+      await controlCentre.finishMinting();
       const BENEFICIARY = accounts[5];
 
       try {
@@ -153,7 +160,7 @@ contract('Token', (accounts) => {
 
     it('should not allow investors to approve when Paused', async () => {
 
-      await token.pause();
+      await controlCentre.pause();
 
       const TOKENHOLDER_1 = accounts[0];
       const BENEFICIARY = accounts[5];
@@ -210,7 +217,7 @@ contract('Token', (accounts) => {
       const BENEFICIARY = accounts[5];
       const tokensAmount = 100;
 
-      await token.pause();
+      await controlCentre.pause();
 
       try {
         await token.transferFrom(TOKENHOLDER_1, BENEFICIARY, tokensAmount, {from: BENEFICIARY});

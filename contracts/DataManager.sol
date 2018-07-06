@@ -1,7 +1,7 @@
-    pragma solidity ^0.4.11;
+pragma solidity ^0.4.11;
 
-    import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
-    import "./DataCentre.sol";
+import "./DataCentre.sol";
+import "./Pausable.sol";
 
 
 contract DataManager is Pausable {
@@ -10,15 +10,7 @@ contract DataManager is Pausable {
     address public dataCentreAddr;
 
     function DataManager(address _dataCentreAddr) {
-        dataCentreAddr = _dataCentreAddr == address(0) ? address(createDataCentre()) : _dataCentreAddr;
-    }
-
-    // This handles the upgradeability part
-    function kill(address _newTokenContract) public onlyOwner whenPaused {
-        if (dataCentreAddr != address(0)) {
-            Ownable(dataCentreAddr).transferOwnership(msg.sender);
-        }
-        selfdestruct(_newTokenContract);
+        dataCentreAddr = _dataCentreAddr;
     }
 
     // Constant Functions
@@ -32,11 +24,6 @@ contract DataManager is Pausable {
 
     function allowance(address _owner, address _spender) public constant returns (uint256) {
         return DataCentre(dataCentreAddr).getConstraint("STK", _owner, _spender);
-    }
-
-    // Internal Functions
-    function createDataCentre() internal returns (DataCentre) {
-        return new DataCentre();
     }
 
     function _setTotalSupply(uint256 _newTotalSupply) internal {
