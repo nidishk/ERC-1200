@@ -19,21 +19,21 @@ contract ControlCentre is CrowdsaleControl {
     }
 
     // Owner Functions
-    function setContracts(address _satellite, address _dataCentreAddr) public onlyAdmins whenPaused(msg.sender) {
+    function setContracts(address _satellite, address _dataCentreAddr) public onlyAdmins whenPaused(address(0)) {
         dataCentreAddr = _dataCentreAddr;
         satellite = _satellite;
     }
 
-    function kill(address _newController) public onlyAdmins whenPaused(msg.sender) {
-        if (dataCentreAddr != address(0)) { 
-            Ownable(dataCentreAddr).transferOwnership(msg.sender); 
+    function kill(address _newController) public onlyAdmins whenPaused(address(0)) {
+        if (dataCentreAddr != address(0)) {
+            Ownable(dataCentreAddr).transferOwnership(_newController);
         }
 
-        if (satellite != address(0)) { 
-            Ownable(satellite).transferOwnership(msg.sender); 
+        if (satellite != address(0)) {
+            Ownable(satellite).transferOwnership(_newController);
         }
 
         selfdestruct(_newController);
     }
-    
+
 }

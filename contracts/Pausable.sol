@@ -12,6 +12,7 @@ contract Pausable is Governable {
 
     event Pause();
     event Unpause();
+    event LOG(bool x);
     bool public paused = true;
 
     /**
@@ -19,6 +20,7 @@ contract Pausable is Governable {
     */
     modifier whenNotPaused(address _to) {
         var(adminStatus, ) = isAdmin(_to);
+        LOG(!paused || adminStatus);
         require(!paused || adminStatus);
         _;
     }

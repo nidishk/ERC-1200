@@ -5,7 +5,7 @@ const assertJump = require('./helpers/assertJump');
 
 contract('Token', (accounts) => {
   let token;
-  let controlCentre;  
+  let controlCentre;
   let dataCentre;
 
   beforeEach(async () => {
@@ -15,15 +15,15 @@ contract('Token', (accounts) => {
     await token.transferOwnership(controlCentre.address);
     await dataCentre.transferOwnership(controlCentre.address);
     await controlCentre.unpause();
-    await controlCentre.mint(accounts[0], 100);
+    await controlCentre.mint(accounts[5], 100);
   });
 
   // only needed because of the refactor
   describe('#transfer', () => {
     it('should allow investors to transfer', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       await token.transfer(BENEFICIARY, tokensAmount, {from: TOKENHOLDER_1});
@@ -33,9 +33,9 @@ contract('Token', (accounts) => {
 
     it('should not allow scammer and transfer un-owned tokens', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
+      const TOKENHOLDER_1 = accounts[5];
       const SCAMMER = accounts[4];
-      const BENEFICIARY = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -50,8 +50,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transfer tokens more than balance', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       await token.transfer(BENEFICIARY, tokensAmount, {from: TOKENHOLDER_1});
@@ -69,8 +69,8 @@ contract('Token', (accounts) => {
 
       await controlCentre.pause();
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -86,7 +86,7 @@ contract('Token', (accounts) => {
     it('should not allow minting tokens when mintingFinished', async () => {
 
       await controlCentre.finishMinting();
-      const BENEFICIARY = accounts[5];
+      const BENEFICIARY = accounts[0];
 
       try {
         await token.mint(BENEFICIARY, 100);
@@ -100,8 +100,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transfer tokens to self', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -114,8 +114,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transfer tokens to address(0)', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -128,8 +128,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transfer tokens to with zero amount', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -144,8 +144,8 @@ contract('Token', (accounts) => {
   describe('#transferFrom', () => {
     it('should allow investors to approve and transferFrom', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       await token.approve(BENEFICIARY, tokensAmount, {from: TOKENHOLDER_1});
@@ -162,8 +162,8 @@ contract('Token', (accounts) => {
 
       await controlCentre.pause();
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -178,8 +178,8 @@ contract('Token', (accounts) => {
 
     it('should not allow investors to approve tokens to self', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       try {
@@ -194,8 +194,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transferFrom tokens more than allowed', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       await token.approve(BENEFICIARY, tokensAmount, {from: TOKENHOLDER_1});
@@ -213,8 +213,8 @@ contract('Token', (accounts) => {
 
     it('should not allow transferFrom tokens when Paused', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const tokensAmount = 100;
 
       await controlCentre.pause();
@@ -231,8 +231,8 @@ contract('Token', (accounts) => {
 
     it('should not allow scammers to approve un-owned tokens', async () => {
 
-      const TOKENHOLDER_1 = accounts[0];
-      const BENEFICIARY = accounts[5];
+      const TOKENHOLDER_1 = accounts[5];
+      const BENEFICIARY = accounts[0];
       const SCAMMER = accounts[4];
       const tokensAmount = 100;
 
