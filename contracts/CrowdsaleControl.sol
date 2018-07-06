@@ -1,11 +1,11 @@
 pragma solidity ^0.4.11;
 
 import "./SimpleControl.sol";
-import "./SkeletalToken.sol";
+import "./ERC1200.sol";
 
 
 contract CrowdsaleControl is SimpleControl {
-    
+
     using SafeMath for uint;
 
     // not necessary to store in data centre
@@ -26,19 +26,19 @@ contract CrowdsaleControl is SimpleControl {
     function mint(address _to, uint256 _amount) whenNotPaused(_to) canMint(true, msg.sender) onlyAdmins public returns (bool) {
         _setTotalSupply(totalSupply().add(_amount));
         _setBalanceOf(_to, balanceOf(_to).add(_amount));
-        SkeletalToken(satellite).mint(_to, _amount);
+        ERC1200(satellite).mint(_to, _amount);
         return true;
     }
 
     function startMinting() public onlyAdmins returns (bool) {
         mintingFinished = false;
-        SkeletalToken(satellite).mintToggle(mintingFinished);
+        ERC1200(satellite).mintToggle(mintingFinished);
         return true;
     }
 
     function finishMinting() public onlyAdmins returns (bool) {
         mintingFinished = true;
-        SkeletalToken(satellite).mintToggle(mintingFinished);
+        ERC1200(satellite).mintToggle(mintingFinished);
         return true;
     }
 

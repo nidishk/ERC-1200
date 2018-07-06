@@ -5,7 +5,7 @@ import "zeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "./ControlCentreInterface.sol";
 
 
-contract SkeletalToken is Ownable, ERC20 {
+contract ERC1200 is Ownable, ERC20 {
 
     uint256 public constant INITIAL_SUPPLY = 28350000e18;
 

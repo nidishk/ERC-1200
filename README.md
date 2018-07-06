@@ -1,4 +1,4 @@
-# UIP2
+# ERC1200
 The modularization approach to upgradeability using data centre
 
 # installation
@@ -16,7 +16,7 @@ npm test
 or run individual tests:
 
 ```
-npm test test/logicalToken.js
+npm test test/ERC1200.js
 ```
 
 # code coverage

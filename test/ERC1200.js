@@ -1,4 +1,4 @@
-const Token = artifacts.require('./SkeletalToken.sol');
+const Token = artifacts.require('./ERC1200.sol');
 const ControlCentre = artifacts.require('./ControlCentre.sol');
 const DataCentre = artifacts.require('./DataCentre.sol');
 const assertJump = require('./helpers/assertJump');
